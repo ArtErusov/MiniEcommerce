@@ -1,3 +1,5 @@
+import styles from './test.module.scss';
+
 export function Test1() {
   return (
     <>
