@@ -1,28 +1,28 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
 import path from 'path';
+import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite';
 
 export default defineConfig({
-  css: {
-preprocessorOptions: {
- scss: {
- additionalData: `
+   css: {
+      preprocessorOptions: {
+         scss: {
+            additionalData: `
  @use '@shared/styles/index.scss';
  `,
- },
- },
- },
-  plugins: [react()],
-  resolve: {
-    alias: {
-      '@app': path.resolve(__dirname, 'src/app'),
-'@shared': path.resolve(__dirname, 'src/shared'),
-'@entities': path.resolve(__dirname, 'src/entities'),
-'@features': path.resolve(__dirname, 'src/features'),
-'@widgets': path.resolve(__dirname, 'src/widgets'),
-'@pages': path.resolve(__dirname, 'src/pages'),
-'@processes': path.resolve(__dirname, 'src/processes'),
-'@': path.resolve(__dirname, 'src'),
-    },
-  },
+         },
+      },
+   },
+   plugins: [react()],
+   resolve: {
+      alias: {
+         '@app': path.resolve(__dirname, 'src/app'),
+         '@shared': path.resolve(__dirname, 'src/shared'),
+         '@entities': path.resolve(__dirname, 'src/entities'),
+         '@features': path.resolve(__dirname, 'src/features'),
+         '@widgets': path.resolve(__dirname, 'src/widgets'),
+         '@pages': path.resolve(__dirname, 'src/pages'),
+         '@processes': path.resolve(__dirname, 'src/processes'),
+         '@': path.resolve(__dirname, 'src'),
+      },
+   },
 });

@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { Test1 } from '@/Test.tsx';
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <Test1 />
-  </StrictMode>,
+   <StrictMode>
+      <Test1 />
+   </StrictMode>,
 );
