@@ -1,7 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom';
-
-import { AppLayout } from '../layouts/AppLayout';
-import { Test1, Test2 } from '@/Test';
+import { AppLayout } from '../../layouts/AppLayout';
 
 const router = createBrowserRouter([
    {
@@ -10,11 +8,11 @@ const router = createBrowserRouter([
       children: [
          {
             path: 't1',
-            element: <Test1 />,
+            element: <p>Test1 </p>,
          },
          {
             path: 't2',
-            element: <Test2 />,
+            element: <p>Test2 </p>,
          },
       ],
    },
