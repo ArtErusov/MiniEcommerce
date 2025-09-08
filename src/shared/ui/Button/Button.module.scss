@@ -1,0 +1,9 @@
+.button {
+   &-link {
+      color: var(--color-black-70);
+      font-weight: 600;
+      &:visited {
+         color: var(--color-black-70);
+      }
+   }
+}
