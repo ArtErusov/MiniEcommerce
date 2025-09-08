@@ -2,7 +2,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import { AppLayout } from '../../layouts/AppLayout';
 import { Cart } from '@/pages/Cart';
 import { Error } from '@/pages/Error';
-import { Featured } from '@/pages/Featured';
+import { Favorites } from '@/pages/Favorites';
 import { Main } from '@/pages/Main';
 
 const router = createBrowserRouter([
@@ -22,8 +22,8 @@ const router = createBrowserRouter([
             errorElement: <Error />,
          },
          {
-            path: 'featured',
-            element: <Featured />,
+            path: 'favorites',
+            element: <Favorites />,
             errorElement: <Error />,
          },
       ],
