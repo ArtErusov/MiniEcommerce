@@ -1,76 +1,53 @@
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 import styles from './Main.module.scss';
-import { Button } from '@/shared/ui/Button';
-
-interface OrangeItem {
-   id: number;
-   customId: string;
-   src: string[];
-   price: number;
-   rating: number;
-   review: number;
-   platforms: string[];
-   manufacturer: string;
-   text: string;
-   dataSearch: string;
-}
+import type { Product } from '@/entities/product/model/types';
+import { ProductCard } from '@/entities/product/ui/ProductCard';
+import { ProductCardSkeleton } from '@/entities/product/ui/ProductCardSkeleton';
+import { Pagination } from '@/shared/ui/Pagination';
 
 export const Main = () => {
-   const [data, setData] = useState<OrangeItem[]>([]);
+   const [data, setData] = useState<Product[]>([]);
    const [loading, setLoading] = useState<boolean>(true);
-   const [error, setError] = useState<string | null>(null);
+   // const [error, setError] = useState<string | null>(null);
+   const [page, setPage] = useState<number>(1);
+
+   const elementsOnPage: number = 4;
 
    useEffect(() => {
-      fetch('https://65523e2c5c69a7790329c0eb.mockapi.io/Orange')
-         .then((response) => {
-            if (!response.ok) {
-               throw new Error('Ошибка сети');
-            }
-            return response.json();
-         })
-         .then((data: OrangeItem[]) => {
-            setData(data);
+      setLoading(true);
+
+      const fetchData = async () => {
+         try {
+            const response = await axios.get<Product[]>(
+               `https://65523e2c5c69a7790329c0eb.mockapi.io/Orange`,
+               {
+                  params: {
+                     page,
+                     limit: 5,
+                  },
+               },
+            );
+            setData(response.data);
+         } catch (error) {
+            console.error('Ошибка при загрузке данных:', error);
+            setData([]);
+         } finally {
             setLoading(false);
-         })
-         .catch((err: Error) => {
-            setError(err.message);
-            setLoading(false);
-         });
-   }, []);
+         }
+      };
+
+      fetchData();
+   }, [page]);
 
    return (
       <>
          <ul className={styles['main__card']}>
             {loading
-               ? Array.from({ length: 5 }).map((_, index) => (
-                    <li key={index} className={`${styles.card} ${styles['card--skeleton']}`}>
-                       <div className={styles['card__image-skeleton']} />
-                       <div className={styles['card__info']}>
-                          <div className={styles['card__price-skeleton']} />
-                          <div className={styles['card__view-skeleton']} />
-                       </div>
-                       <div className={styles['card__title-skeleton']} />
-                       <div className={styles['card__actions']}>
-                          <div className={styles['card__button-skeleton']} />
-                          <div className={styles['card__favorite-skeleton']} />
-                       </div>
-                    </li>
-                 ))
-               : data.slice(0, 5).map((item) => (
-                    <li className={styles['card']} key={item.id}>
-                       <img src={item.src[0]} alt={item.text} className={styles['card__image']} />
-                       <div className={styles['card__info']}>
-                          <p className={styles['card__price']}>{item.price} ₽</p>
-                          <div className={styles['card__view']}>просмотр</div>
-                       </div>
-                       <p className={styles['card__title']}>{item.text}</p>
-                       <div className={styles['card__actions']}>
-                          <Button className={styles['card__button']}>в корзину</Button>
-                          <div className={styles['card__favorite']}>и</div>
-                       </div>
-                    </li>
-                 ))}
+               ? Array.from({ length: 5 }).map((_, index) => <ProductCardSkeleton key={index} />)
+               : data.map((item) => <ProductCard item={item} />)}
          </ul>
+         <Pagination elementsOnPage={elementsOnPage} page={page} setPage={setPage} />
       </>
    );
 };
