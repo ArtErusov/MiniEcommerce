@@ -1,11 +1,11 @@
 import clsx from 'clsx';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import styles from './Header.module.scss';
-import type { NavLink } from './Header.types';
+import type { NavLinkItem } from './Header.types';
 
 export function Header() {
-   const navLinks: NavLink[] = [
+   const navLinks: NavLinkItem[] = [
       { path: '/', label: 'Каталог' },
       { path: '/cart', label: 'Корзина' },
       { path: '/favorites', label: 'Избранное' },
@@ -21,13 +21,20 @@ export function Header() {
       e.preventDefault();
       console.log('Поиск:', searchValue);
    };
+
    return (
       <header className={styles['header']}>
          <nav className={styles['header__nav']}>
             {navLinks.map((link) => (
-               <Link key={link.path} to={link.path} className={styles['header__link']}>
+               <NavLink
+                  key={link.path}
+                  to={link.path}
+                  className={({ isActive }) =>
+                     clsx(styles.header__link, { [styles['header__link_active']]: isActive })
+                  }
+               >
                   {link.label}
-               </Link>
+               </NavLink>
             ))}
          </nav>
          <form className={styles['header__search']} onSubmit={handleSubmit}>

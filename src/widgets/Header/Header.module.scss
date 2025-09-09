@@ -21,6 +21,10 @@
       &:hover {
          color: var(--color-orange-500);
       }
+      &_active,
+      &_active:visited {
+         color: var(--color-orange-300);
+      }
    }
 
    &__search {
@@ -32,6 +36,10 @@
       justify-content: space-between;
       align-items: center;
       padding: 0 5px 0 18px;
+   }
+
+   &__input {
+      width: 500px;
    }
    &__input-button {
       width: 40px;

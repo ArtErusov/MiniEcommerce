@@ -4,7 +4,7 @@ import styles from './Button.module.scss';
 import type { ButtonProps } from './Button.types';
 
 export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
-   ({ variant, children, className, ...props }, ref) => {
+   ({ variant = 'primary', children, className, ...props }, ref) => {
       const isLink = 'href' in props;
       const Component = (isLink ? 'a' : 'button') as React.ElementType;
       return (

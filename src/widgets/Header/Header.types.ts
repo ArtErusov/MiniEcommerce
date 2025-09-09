@@ -1,4 +1,4 @@
-export interface NavLink {
+export interface NavLinkItem {
    path: string;
    label: string;
 }

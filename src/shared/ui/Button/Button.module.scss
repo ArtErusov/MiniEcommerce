@@ -6,4 +6,18 @@
          color: var(--color-black-70);
       }
    }
+   &-primary {
+      color: var(--color-white);
+      background-color: var(--color-orange-300);
+      width: 132px;
+      height: 38px;
+      border-radius: 10px;
+      transition:
+         background-color 0.2s ease,
+         font-weight 0.2s ease;
+      &:hover {
+         background-color: var(--color-black-70);
+         font-weight: 600;
+      }
+   }
 }
