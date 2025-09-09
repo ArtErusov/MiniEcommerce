@@ -1,7 +1,8 @@
 import axios, { AxiosError } from 'axios';
 import { useState, type FormEvent } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from './Auth.module.scss';
+import type { LoginResponse } from '@/auth.interface';
 import { Button } from '@/shared/ui/Button';
 
 export type LoginForm = {
@@ -14,6 +15,7 @@ export type LoginForm = {
 };
 
 export const Auth = () => {
+   const navigate = useNavigate();
    const [error, setError] = useState<string | null>(null);
    const handleCopy = async (text: string) => {
       try {
@@ -34,11 +36,16 @@ export const Auth = () => {
 
    const sendLogin = async (email: string, password: string) => {
       try {
-         const { data } = await axios.post(`https://purpleschool.ru/pizza-api-demo/auth/login`, {
-            email,
-            password,
-         });
+         const { data } = await axios.post<LoginResponse>(
+            `https://purpleschool.ru/pizza-api-demo/auth/login`,
+            {
+               email,
+               password,
+            },
+         );
          console.log(data);
+         localStorage.setItem('jwt', data.access_token);
+         navigate('/');
       } catch (e) {
          if (e instanceof AxiosError) {
             setError(e.response?.data.messege);

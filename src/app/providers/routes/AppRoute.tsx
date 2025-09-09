@@ -8,6 +8,7 @@ import { Error } from '@/pages/Error';
 import { Favorites } from '@/pages/Favorites';
 import { Main } from '@/pages/Main';
 import { Product } from '@/pages/Product';
+import { RequireAuth } from '@/shared/lib/auth/RequireAuth';
 
 const router = createBrowserRouter([
    {
@@ -22,12 +23,20 @@ const router = createBrowserRouter([
          },
          {
             path: 'cart',
-            element: <Cart />,
+            element: (
+               <RequireAuth>
+                  <Cart />
+               </RequireAuth>
+            ),
             errorElement: <Error />,
          },
          {
             path: 'favorites',
-            element: <Favorites />,
+            element: (
+               <RequireAuth>
+                  <Favorites />
+               </RequireAuth>
+            ),
             errorElement: <Error />,
          },
          {
