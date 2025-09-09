@@ -1,8 +1,20 @@
+import axios, { AxiosError } from 'axios';
+import { useState, type FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Auth.module.scss';
 import { Button } from '@/shared/ui/Button';
 
+export type LoginForm = {
+   email: {
+      value: string;
+   };
+   password: {
+      value: string;
+   };
+};
+
 export const Auth = () => {
+   const [error, setError] = useState<string | null>(null);
    const handleCopy = async (text: string) => {
       try {
          await navigator.clipboard.writeText(text);
@@ -10,31 +22,66 @@ export const Auth = () => {
          console.error('Ошибка копирования', err);
       }
    };
+
+   const submit = async (e: FormEvent) => {
+      e.preventDefault();
+      setError(null);
+      const target = e.target as typeof e.target & LoginForm;
+      const email = target.email.value;
+      const password = target.password.value;
+      await sendLogin(email, password);
+   };
+
+   const sendLogin = async (email: string, password: string) => {
+      try {
+         const { data } = await axios.post(`https://purpleschool.ru/pizza-api-demo/auth/login`, {
+            email,
+            password,
+         });
+         console.log(data);
+      } catch (e) {
+         if (e instanceof AxiosError) {
+            setError(e.response?.data.messege);
+         }
+      }
+   };
+
    return (
       <>
          <div className={styles['auth']}>
             <div className={styles['auth__content']}>
                <h2 className={styles['auth__title']}>Вход</h2>
+               {error && <div className={styles['auth__error']}>{error}</div>}
                <div className={styles['auth__switch']}>
                   <p className={styles['auth__text']}>Нет аккаунта?</p>
                   <Link to="reg" className={styles['auth__link']}>
                      Регистрация
                   </Link>
                </div>
-               <form className={styles['auth__form']}>
-                  <input type="text" placeholder="Логин" className={styles['auth__input']} />
+               <form onSubmit={submit} className={styles['auth__form']}>
+                  <input
+                     id="email"
+                     type="text"
+                     placeholder="Логин"
+                     className={styles['auth__input']}
+                  />
 
-                  <input type="password" placeholder="Пароль" className={styles['auth__input']} />
+                  <input
+                     id="password"
+                     type="password"
+                     placeholder="Пароль"
+                     className={styles['auth__input']}
+                  />
 
                   <Button className={styles['auth__btn']}>Вход</Button>
                </form>
                <div className={styles['auth__test-data']}>
                   <p className={styles['auth__subtitle']}>Логин и пароль для теста</p>
-                  <p className={styles['auth__info']} onClick={() => handleCopy('test')}>
-                     Логин: <span className={styles['auth__copy']}>test</span>
+                  <p className={styles['auth__info']} onClick={() => handleCopy('a@gmail.com')}>
+                     Логин: <span className={styles['auth__copy']}>a@gmail.com</span>
                   </p>
-                  <p className={styles['auth__info']} onClick={() => handleCopy('1234')}>
-                     Пароль: <span className={styles['auth__copy']}>1234</span>
+                  <p className={styles['auth__info']} onClick={() => handleCopy('123')}>
+                     Пароль: <span className={styles['auth__copy']}>123</span>
                   </p>
                </div>
             </div>
