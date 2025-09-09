@@ -9,9 +9,9 @@ import { Pagination } from '@/shared/ui/Pagination';
 export const Main = () => {
    const [data, setData] = useState<Product[]>([]);
    const [loading, setLoading] = useState<boolean>(true);
-   const [page, setPage] = useState<number>(1);
+   const [currentPage, setCurrentPage] = useState<number>(1);
 
-   const elementsOnPage: number = 4;
+   const totalPages: number = 4;
 
    useEffect(() => {
       setLoading(true);
@@ -22,7 +22,7 @@ export const Main = () => {
                `https://65523e2c5c69a7790329c0eb.mockapi.io/Orange`,
                {
                   params: {
-                     page,
+                     page: currentPage,
                      limit: 5,
                   },
                },
@@ -37,7 +37,7 @@ export const Main = () => {
       };
 
       fetchData();
-   }, [page]);
+   }, [currentPage]);
 
    return (
       <>
@@ -46,7 +46,12 @@ export const Main = () => {
                ? Array.from({ length: 5 }).map((_, index) => <ProductCardSkeleton key={index} />)
                : data.map((item) => <ProductCard item={item} />)}
          </ul>
-         <Pagination elementsOnPage={elementsOnPage} page={page} setPage={setPage} />
+         <Pagination
+            className={styles['main__pagination']}
+            totalPages={totalPages}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+         />
       </>
    );
 };

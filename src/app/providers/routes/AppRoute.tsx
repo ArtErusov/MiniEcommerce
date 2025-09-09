@@ -2,10 +2,10 @@ import axios from 'axios';
 import { createBrowserRouter, type LoaderFunctionArgs } from 'react-router-dom';
 import { AppLayout } from '../../layouts/AppLayout';
 import { AuthLayout } from '@/app/layouts/AuthLayout';
-import { Auth } from '@/pages/Auth';
 import { Cart } from '@/pages/Cart';
 import { Error } from '@/pages/Error';
 import { Favorites } from '@/pages/Favorites';
+import { Login } from '@/pages/Login';
 import { Main } from '@/pages/Main';
 import { Product } from '@/pages/Product';
 import { RequireAuth } from '@/shared/lib/auth/RequireAuth';
@@ -64,7 +64,7 @@ const router = createBrowserRouter([
       children: [
          {
             path: '',
-            element: <Auth />,
+            element: <Login />,
          },
          {
             path: 'reg',

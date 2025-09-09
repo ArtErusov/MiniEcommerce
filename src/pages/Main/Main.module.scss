@@ -1,7 +1,14 @@
-.main__card {
-   display: flex;
-   height: 350px;
-   gap: 20px;
-   width: 100%;
-   margin: 20px 20px 0;
+.main {
+   &__card {
+      display: flex;
+      height: 350px;
+      gap: 20px;
+      width: 100%;
+      margin: 20px 20px 0;
+   }
+   &__pagination {
+      margin: 16px 0;
+      display: flex;
+      justify-content: center;
+   }
 }

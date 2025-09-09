@@ -1,51 +1,51 @@
+import clsx from 'clsx';
 import type { FC } from 'react';
 import styles from './Pagination.module.scss';
-import clsx from 'clsx';
+import type { PaginationProps } from './Pagination.types';
 
-interface PaginationProps {
-   page: number;
-   setPage: (page: number) => void;
-   elementsOnPage: number;
-}
-
-export const Pagination: FC<PaginationProps> = ({ elementsOnPage, page, setPage }) => {
-   const handlerPreviousСlick = () => {
-      if (page !== 1) {
-         setPage(page - 1);
+export const Pagination: FC<PaginationProps> = ({
+   totalPages,
+   currentPage,
+   setCurrentPage,
+   className,
+}) => {
+   const handlePreviousСlick = () => {
+      if (currentPage !== 1) {
+         setCurrentPage(currentPage - 1);
       }
    };
 
-   const handlerNextСlick = () => {
-      if (page !== elementsOnPage) {
-         setPage(page + 1);
+   const handleNextСlick = () => {
+      if (currentPage !== totalPages) {
+         setCurrentPage(currentPage + 1);
       }
    };
 
    return (
-      <ul className={styles.pagination}>
+      <ul className={clsx(styles['pagination'], className)}>
          <li
-            onClick={() => handlerPreviousСlick()}
+            onClick={() => handlePreviousСlick()}
             className={clsx(styles['pagination__item'], {
-               [styles['pagination__item--passive']]: page === 1,
+               [styles['pagination__item--passive']]: currentPage === 1,
             })}
          >{`<`}</li>
-         {Array(elementsOnPage)
+         {Array(totalPages)
             .fill(null)
             .map((_, index) => (
                <li
                   className={clsx(styles['pagination__item'], {
-                     [styles['pagination__item--active']]: page === index + 1,
+                     [styles['pagination__item--active']]: currentPage === index + 1,
                   })}
-                  onClick={() => setPage(index + 1)}
+                  onClick={() => setCurrentPage(index + 1)}
                   key={index}
                >
                   {index + 1}
                </li>
             ))}
          <li
-            onClick={() => handlerNextСlick()}
+            onClick={handleNextСlick}
             className={clsx(styles['pagination__item'], {
-               [styles['pagination__item--passive']]: page === elementsOnPage,
+               [styles['pagination__item--passive']]: currentPage === totalPages,
             })}
          >{`>`}</li>
       </ul>

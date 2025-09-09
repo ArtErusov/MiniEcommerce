@@ -12,11 +12,15 @@
       font-weight: 600;
       font-size: 18px;
       cursor: pointer;
+      transition:
+         background-color 0.2s ease,
+         color 0.2s ease;
 
-      &:hover {
+      &:not(&--active):not(&--passive):hover {
          background-color: var(--color-black-70);
          color: var(--white);
       }
+
       &--active {
          color: var(--color-orange-300);
          cursor: default;

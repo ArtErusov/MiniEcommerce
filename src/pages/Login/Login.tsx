@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios';
 import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import styles from './Auth.module.scss';
+import styles from './Login.module.scss';
 import type { LoginResponse } from '@/auth.interface';
 import { Button } from '@/shared/ui/Button';
 
@@ -14,7 +14,7 @@ export type LoginForm = {
    };
 };
 
-export const Auth = () => {
+export const Login = () => {
    const navigate = useNavigate();
    const [error, setError] = useState<string | null>(null);
    const handleCopy = async (text: string) => {
@@ -56,6 +56,9 @@ export const Auth = () => {
    return (
       <>
          <div className={styles['auth']}>
+            <div onClick={() => navigate('/')} className={styles['auth__back']}>
+               на главную
+            </div>
             <div className={styles['auth__content']}>
                <h2 className={styles['auth__title']}>Вход</h2>
                {error && <div className={styles['auth__error']}>{error}</div>}
