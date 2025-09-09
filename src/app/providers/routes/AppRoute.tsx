@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { createBrowserRouter, type LoaderFunctionArgs } from 'react-router-dom';
 import { AppLayout } from '../../layouts/AppLayout';
+import { AuthLayout } from '@/app/layouts/AuthLayout';
+import { Auth } from '@/pages/Auth';
 import { Cart } from '@/pages/Cart';
 import { Error } from '@/pages/Error';
 import { Favorites } from '@/pages/Favorites';
@@ -42,6 +44,22 @@ const router = createBrowserRouter([
                   throw new Response('Product not found', { status: 404 }); // Ошибка - будет показан errorElement
                }
             },
+         },
+      ],
+   },
+
+   {
+      path: '/auth',
+      element: <AuthLayout />,
+      errorElement: <Error />,
+      children: [
+         {
+            path: '',
+            element: <Auth />,
+         },
+         {
+            path: 'reg',
+            element: <p>Регистрация</p>,
          },
       ],
    },

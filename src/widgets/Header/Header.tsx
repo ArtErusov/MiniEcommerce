@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import styles from './Header.module.scss';
 import type { NavLinkItem } from './Header.types';
 
@@ -48,7 +48,9 @@ export function Header() {
             <button className={styles['header__input-button']}>g</button>
          </form>
 
-         <p className={clsx(styles['header__auth'], styles['header__link'])}>Войти</p>
+         <Link to={'/auth'} className={clsx(styles['header__auth'], styles['header__link'])}>
+            Войти
+         </Link>
       </header>
    );
 }
