@@ -9,7 +9,6 @@ import { Pagination } from '@/shared/ui/Pagination';
 export const Main = () => {
    const [data, setData] = useState<Product[]>([]);
    const [loading, setLoading] = useState<boolean>(true);
-   // const [error, setError] = useState<string | null>(null);
    const [page, setPage] = useState<number>(1);
 
    const elementsOnPage: number = 4;
