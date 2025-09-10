@@ -1,9 +1,13 @@
+import { useDispatch } from 'react-redux';
 import styles from './Footer.module.scss';
+import type { AppDispath } from '@/app/providers/store/store';
+import { userActions } from '@/app/providers/store/user.slice';
 import { Button } from '@/shared/ui/Button';
 
 export function Footer() {
+   const dispatch = useDispatch<AppDispath>();
    const logout = () => {
-      localStorage.removeItem('jwt');
+      dispatch(userActions.logout());
    };
    return (
       <footer className={styles['footer']}>

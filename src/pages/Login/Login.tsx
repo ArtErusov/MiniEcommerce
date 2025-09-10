@@ -1,7 +1,10 @@
 import axios, { AxiosError } from 'axios';
 import { useState, type FormEvent } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './Login.module.scss';
+import type { AppDispath } from '@/app/providers/store/store';
+import { userActions } from '@/app/providers/store/user.slice';
 import type { LoginResponse } from '@/auth.interface';
 import { Button } from '@/shared/ui/Button';
 
@@ -16,6 +19,7 @@ export type LoginForm = {
 
 export const Login = () => {
    const navigate = useNavigate();
+   const dispatch = useDispatch<AppDispath>();
    const [error, setError] = useState<string | null>(null);
    const handleCopy = async (text: string) => {
       try {
@@ -44,7 +48,7 @@ export const Login = () => {
             },
          );
          console.log(data);
-         localStorage.setItem('jwt', data.access_token);
+         dispatch(userActions.addJwt(data.access_token));
          navigate('/');
       } catch (e) {
          if (e instanceof AxiosError) {
