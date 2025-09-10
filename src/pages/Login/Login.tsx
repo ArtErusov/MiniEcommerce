@@ -97,6 +97,7 @@ export const Login = () => {
                   <p className={styles['auth__info']} onClick={() => handleCopy('123')}>
                      Пароль: <span className={styles['auth__copy']}>123</span>
                   </p>
+                  <p className={styles['auth__subtitle-footer']}>Копируется при нажатии</p>
                </div>
             </div>
          </div>
