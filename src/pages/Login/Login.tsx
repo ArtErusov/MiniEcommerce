@@ -27,6 +27,7 @@ export const Login = () => {
    const navigate = useNavigate();
    const dispatch = useDispatch<AppDispatch>();
    const [error, setError] = useState<string | null>(null);
+
    const handleCopy = async (text: string) => {
       try {
          await navigator.clipboard.writeText(text);
@@ -34,34 +35,6 @@ export const Login = () => {
          console.error('Ошибка копирования', err);
       }
    };
-
-   // const submit = async (e: FormEvent) => {
-   //    e.preventDefault();
-   //    setError(null);
-   //    const target = e.target as typeof e.target & LoginForm;
-   //    const email = target.email.value;
-   //    const password = target.password.value;
-   //    await sendLogin(email, password);
-   // };
-
-   // const sendLogin = async (email: string, password: string) => {
-   //    try {
-   //       const { data } = await axios.post<LoginResponse>(
-   //          `https://purpleschool.ru/pizza-api-demo/auth/login`,
-   //          {
-   //             email,
-   //             password,
-   //          },
-   //       );
-   //       console.log(data);
-   //       dispatch(userActions.addJwt(data.access_token));
-   //       navigate('/');
-   //    } catch (e) {
-   //       if (e instanceof AxiosError) {
-   //          setError(e.response?.data.messege);
-   //       }
-   //    }
-   // };
 
    const submit = async (e: FormEvent) => {
       e.preventDefault();
