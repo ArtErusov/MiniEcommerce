@@ -1,10 +1,19 @@
 import clsx from 'clsx';
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 import styles from './Header.module.scss';
 import type { NavLinkItem } from './Header.types';
+import type { AppDispath, RootState } from '@/app/providers/store/store';
+import { userActions } from '@/app/providers/store/user.slice';
 
 export function Header() {
+   const jwt = useSelector((state: RootState) => state.user.jwt);
+   const dispatch = useDispatch<AppDispath>();
+   const logout = () => {
+      dispatch(userActions.logout());
+   };
+
    const navLinks: NavLinkItem[] = [
       { path: '/', label: 'Каталог' },
       { path: '/cart', label: 'Корзина' },
@@ -47,10 +56,15 @@ export function Header() {
             />
             <button className={styles['header__input-button']}>g</button>
          </form>
-
-         <Link to={'/auth'} className={clsx(styles['header__auth'], styles['header__link'])}>
-            Войти
-         </Link>
+         {jwt ? (
+            <div className={styles['header__link']} onClick={() => logout()}>
+               Выйти
+            </div>
+         ) : (
+            <Link to={'/auth'} className={styles['header__link']}>
+               Войти
+            </Link>
+         )}
       </header>
    );
 }
