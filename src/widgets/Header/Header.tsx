@@ -4,12 +4,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 import styles from './Header.module.scss';
 import type { NavLinkItem } from './Header.types';
-import type { AppDispath, RootState } from '@/app/providers/store/store';
+import type { AppDispatch, RootState } from '@/app/providers/store/store';
 import { userActions } from '@/app/providers/store/user.slice';
 
 export function Header() {
    const jwt = useSelector((state: RootState) => state.user.jwt);
-   const dispatch = useDispatch<AppDispath>();
+   const dispatch = useDispatch<AppDispatch>();
    const logout = () => {
       dispatch(userActions.logout());
    };

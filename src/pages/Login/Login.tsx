@@ -3,10 +3,13 @@ import { useState, type FormEvent } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './Login.module.scss';
-import type { AppDispath } from '@/app/providers/store/store';
+import type { AppDispatch } from '@/app/providers/store/store';
 import { userActions } from '@/app/providers/store/user.slice';
 import type { LoginResponse } from '@/auth.interface';
 import { Button } from '@/shared/ui/Button';
+import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
+import type { SerializedError } from '@reduxjs/toolkit';
+import { useLoginMutation } from '@/app/providers/store/authApi';
 
 export type LoginForm = {
    email: {
@@ -18,8 +21,11 @@ export type LoginForm = {
 };
 
 export const Login = () => {
+   // eslint-disable-next-line react-hooks/rules-of-hooks
+   const [login] = useLoginMutation();
+
    const navigate = useNavigate();
-   const dispatch = useDispatch<AppDispath>();
+   const dispatch = useDispatch<AppDispatch>();
    const [error, setError] = useState<string | null>(null);
    const handleCopy = async (text: string) => {
       try {
@@ -29,30 +35,61 @@ export const Login = () => {
       }
    };
 
+   // const submit = async (e: FormEvent) => {
+   //    e.preventDefault();
+   //    setError(null);
+   //    const target = e.target as typeof e.target & LoginForm;
+   //    const email = target.email.value;
+   //    const password = target.password.value;
+   //    await sendLogin(email, password);
+   // };
+
+   // const sendLogin = async (email: string, password: string) => {
+   //    try {
+   //       const { data } = await axios.post<LoginResponse>(
+   //          `https://purpleschool.ru/pizza-api-demo/auth/login`,
+   //          {
+   //             email,
+   //             password,
+   //          },
+   //       );
+   //       console.log(data);
+   //       dispatch(userActions.addJwt(data.access_token));
+   //       navigate('/');
+   //    } catch (e) {
+   //       if (e instanceof AxiosError) {
+   //          setError(e.response?.data.messege);
+   //       }
+   //    }
+   // };
+
    const submit = async (e: FormEvent) => {
       e.preventDefault();
       setError(null);
       const target = e.target as typeof e.target & LoginForm;
       const email = target.email.value;
       const password = target.password.value;
-      await sendLogin(email, password);
-   };
 
-   const sendLogin = async (email: string, password: string) => {
       try {
-         const { data } = await axios.post<LoginResponse>(
-            `https://purpleschool.ru/pizza-api-demo/auth/login`,
-            {
-               email,
-               password,
-            },
-         );
-         console.log(data);
+         // unwrap() выбросит ошибку в случае не-2xx ответа
+         const data = await login({ email, password }).unwrap();
+         console.log('login response', data);
          dispatch(userActions.addJwt(data.access_token));
          navigate('/');
-      } catch (e) {
-         if (e instanceof AxiosError) {
-            setError(e.response?.data.messege);
+      } catch (err) {
+         // Разбор ошибки: RTK Query возвращает FetchBaseQueryError или SerializedError
+         const fetchErr = err as FetchBaseQueryError;
+         if (fetchErr && (fetchErr as any).status) {
+            // если сервер возвращает объект { messege: '...' } (обрати внимание на spelling 'messege')
+            const maybeData = (fetchErr as any).data;
+            if (maybeData && typeof maybeData === 'object') {
+               setError((maybeData as any).messege ?? JSON.stringify(maybeData));
+            } else {
+               setError(String((fetchErr as any).status));
+            }
+         } else {
+            const ser = err as SerializedError;
+            setError(ser?.message ?? 'Unknown error');
          }
       }
    };
