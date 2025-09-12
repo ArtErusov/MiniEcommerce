@@ -1,15 +1,13 @@
-import axios, { AxiosError } from 'axios';
+import type { SerializedError } from '@reduxjs/toolkit';
+import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { useState, type FormEvent } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './Login.module.scss';
+import { useLoginMutation } from '@/app/providers/store/authApi';
 import type { AppDispatch } from '@/app/providers/store/store';
 import { userActions } from '@/app/providers/store/user.slice';
-import type { LoginResponse } from '@/auth.interface';
 import { Button } from '@/shared/ui/Button';
-import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
-import type { SerializedError } from '@reduxjs/toolkit';
-import { useLoginMutation } from '@/app/providers/store/authApi';
 
 export type LoginForm = {
    email: {
