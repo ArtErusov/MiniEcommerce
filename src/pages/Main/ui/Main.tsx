@@ -1,17 +1,18 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import styles from './Main.module.scss';
-import type { Product } from '@/entities/product/model/types';
 import { ProductCard } from '@/entities/product/ui/ProductCard';
 import { ProductCardSkeleton } from '@/entities/product/ui/ProductCardSkeleton';
+import { useGetProductsQuery } from '@/shared/api/productApi';
 import { Pagination } from '@/shared/ui/Pagination';
 
 export const Main = () => {
-   const [data, setData] = useState<Product[]>([]);
-   const [loading, setLoading] = useState<boolean>(true);
    const [searchParams, setSearchParams] = useSearchParams();
    const currentPage = Number(searchParams.get('page')) || 1;
+
+   const { data, isLoading, isError } = useGetProductsQuery({
+      page: currentPage,
+      limit: 5,
+   });
 
    const handlePageChange = (page: number) => {
       if (page === 1) {
@@ -21,40 +22,16 @@ export const Main = () => {
          setSearchParams({ page: String(page) });
       }
    };
+
    const totalPages: number = 4;
-
-   useEffect(() => {
-      setLoading(true);
-
-      const fetchData = async () => {
-         try {
-            const response = await axios.get<Product[]>(
-               `https://65523e2c5c69a7790329c0eb.mockapi.io/Orange`,
-               {
-                  params: {
-                     page: currentPage,
-                     limit: 5,
-                  },
-               },
-            );
-            setData(response.data);
-         } catch (error) {
-            console.error('Ошибка при загрузке данных:', error);
-            setData([]);
-         } finally {
-            setLoading(false);
-         }
-      };
-
-      fetchData();
-   }, [currentPage]);
 
    return (
       <>
          <ul className={styles['main__card']}>
-            {loading
+            {isLoading
                ? Array.from({ length: 5 }).map((_, index) => <ProductCardSkeleton key={index} />)
-               : data.map((item) => <ProductCard item={item} />)}
+               : data?.map((item) => <ProductCard key={item.id} item={item} />)}
+            {isError && <p>Ошибка при загрузке данных</p>}
          </ul>
          <Pagination
             className={styles['main__pagination']}
