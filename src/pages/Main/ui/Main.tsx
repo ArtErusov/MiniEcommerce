@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import styles from './Main.module.scss';
 import type { Product } from '@/entities/product/model/types';
 import { ProductCard } from '@/entities/product/ui/ProductCard';
@@ -9,8 +10,17 @@ import { Pagination } from '@/shared/ui/Pagination';
 export const Main = () => {
    const [data, setData] = useState<Product[]>([]);
    const [loading, setLoading] = useState<boolean>(true);
-   const [currentPage, setCurrentPage] = useState<number>(1);
+   const [searchParams, setSearchParams] = useSearchParams();
+   const currentPage = Number(searchParams.get('page')) || 1;
 
+   const handlePageChange = (page: number) => {
+      if (page === 1) {
+         searchParams.delete('page');
+         setSearchParams(searchParams);
+      } else {
+         setSearchParams({ page: String(page) });
+      }
+   };
    const totalPages: number = 4;
 
    useEffect(() => {
@@ -50,7 +60,7 @@ export const Main = () => {
             className={styles['main__pagination']}
             totalPages={totalPages}
             currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
+            setCurrentPage={handlePageChange}
          />
       </>
    );
