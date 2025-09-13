@@ -17,7 +17,6 @@ export function Header() {
    const navLinks: NavLinkItem[] = [
       { path: '/', label: 'Каталог' },
       { path: '/cart', label: 'Корзина' },
-      { path: '/favorites', label: 'Избранное' },
    ];
 
    const [searchValue, setSearchValue] = useState('');

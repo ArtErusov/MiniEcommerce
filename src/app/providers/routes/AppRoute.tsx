@@ -4,7 +4,6 @@ import { AppLayout } from '../../layouts/AppLayout';
 import { AuthLayout } from '@/app/layouts/AuthLayout';
 import { Cart } from '@/pages/Cart';
 import { Error } from '@/pages/Error';
-import { Favorites } from '@/pages/Favorites';
 import { Login } from '@/pages/Login';
 import { Main } from '@/pages/Main';
 import { Product } from '@/pages/Product';
@@ -26,15 +25,6 @@ const router = createBrowserRouter([
             element: (
                <RequireAuth>
                   <Cart />
-               </RequireAuth>
-            ),
-            errorElement: <Error />,
-         },
-         {
-            path: 'favorites',
-            element: (
-               <RequireAuth>
-                  <Favorites />
                </RequireAuth>
             ),
             errorElement: <Error />,
